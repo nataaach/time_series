@@ -14,10 +14,10 @@ def load_data(csv_path="data2.csv"):
     return t, y_original
 
 # ==========================================
-# 2. ГЕНЕРАЦІЯ ТА ОЧИЩЕННЯ АНОМАЛІЙ (ЗБІЛЬШЕНА КІЛЬКІСТЬ)
+# 2. ГЕНЕРАЦІЯ ТА ОЧИЩЕННЯ АНОМАЛІЙ 
 # ==========================================
 def inject_anomalies(y):
-    """Штучне внесення більшої кількості аномалій"""
+    """Штучне внесення аномалій"""
     np.random.seed(42)
     y_corrupted = y.copy()
     anomaly_indices = [5, 15, 30, 42, 55, 68, 75, 88, 95]
@@ -50,10 +50,10 @@ def detect_and_clean_anomalies_mad(series, window=7, threshold=3.0):
     return s_cleaned.to_numpy(), outlier_mask.to_numpy()
 
 # ==========================================
-# 3. R&D: АЛГОРИТМ НАУ (ОПТИМАЛЬНИЙ СТУПІНЬ ЗА ПОХІДНИМИ)
+# 3. R&D:ОПТИМАЛЬНИЙ СТУПІНЬ ЗА ПОХІДНИМИ
 # ==========================================
 def degree_polynomial_derivatives_scor(SL: np.ndarray, dt: float) -> int:
-    """Функція визначення оптимального ступеня полінома (на основі похідних з методички)"""
+    """Функція визначення оптимального ступеня полінома"""
     iter = len(SL)
     y1, y2, y3, y4, y5 = np.zeros(iter), np.zeros(iter), np.zeros(iter), np.zeros(iter), np.zeros(iter)
 
@@ -158,16 +158,16 @@ def main():
     y_noisy, true_anomalies = inject_anomalies(y_original)
     y_cleaned, detected_mask = detect_and_clean_anomalies_mad(y_noisy)
     detected_indices = np.where(detected_mask)[0]
-    print(f"\n[2/6] Штучно внесено аномалії (індекси): {true_anomalies}")
+    print(f"\n[2/6] Штучно внесено аномалії: {true_anomalies}")
     print(f"      Детектовано та очищено (MAD): {detected_indices.tolist()}")
 
-    # 3. R&D: Визначення оптимального ступеня за похідними
+    # 3. R&D: визначення оптимального ступеня за похідними
     dt = 1.0 
     optimal_degree_rd = degree_polynomial_derivatives_scor(y_cleaned, dt)
     if optimal_degree_rd < 2: 
         optimal_degree_rd = 2 
 
-    # 4. Класичний критерій AIC та таблиця
+    # 4. Класичний критерій AIC
     n_forecast = int(0.5 * n_samples)
     t_forecast = np.arange(n_samples, n_samples + n_forecast)
     
@@ -189,7 +189,7 @@ def main():
     print(f"Оптимум за класичним AIC: ступінь {best_degree_aic}")
     print(f"Оптимум за R&D методом (похідні): ступінь {optimal_degree_rd}")
 
-    # Для подальших розрахунків МНК та прогнозу використовуємо ступінь за AIC (або можете замінити на optimal_degree_rd)
+
     chosen_degree = best_degree_aic 
 
     # 5. МНК + Прогноз
@@ -217,7 +217,7 @@ def main():
 
     plt.figure(figsize=(12, 6))
     plt.plot(t, y_cleaned, color="black", alpha=0.5, label="Реальні дані (очищені)")
-    plt.plot(t, y_fit, color="red", linewidth=2, label=f"МНК тренд (Ступінь {chosen_degree})")
+    plt.plot(t, y_fit, color="blue", linewidth=2, label=f"МНК тренд (Ступінь {chosen_degree})")
     plt.plot(t_forecast, y_pred_future, color="magenta", linewidth=2, linestyle="--", label="Екстраполяція (+50%)")
     plt.plot(t, ab_pos, color="green", linestyle="-.", linewidth=2, label="Alpha-Beta фільтрація")
     plt.axvline(n_samples - 1, color="gray", linestyle="--", label="Межа спостереження")
