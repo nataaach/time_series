@@ -1,6 +1,3 @@
-"""
-Модуль генерації синтетичних часових рядів та доведення адекватності.
-"""
 import numpy as np
 import pandas as pd
 from scipy.stats import ks_2samp
@@ -24,7 +21,6 @@ class TSSynthesizer:
         seasonality = self.amplitude * np.sin(2 * np.pi * t / self.period)
         noise = np.random.normal(0, self.noise_std, size=self.length)
         
-        # Виручка не може бути від'ємною
         synthetic_values = np.clip(trend + seasonality + noise, 0, None)
         return pd.Series(synthetic_values)
 
