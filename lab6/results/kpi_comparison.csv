@@ -1,0 +1,3 @@
+Dataset,Paradigm,Best_Model,Train_RMSE,Train_R2,Test_MAE,Test_RMSE,Test_MAPE_%,Test_sMAPE_%,Test_R2,Theil_U,Durbin_Watson,AIC,Time_ms
+Lab2_Data2,ExponentialSmoothing,Holt_Add,11.2786,0.9804,154.3464,234.5163,67.8842,65.7006,0.6909,1.748,0.2204,419.89,82.92
+Lab2_Data2,Regression,Poly2_Fourier_Ridge,51.8107,0.5859,1159.8048,1224.8181,411.8532,107.3311,-7.4301,9.1293,0.0109,677.09,102.47

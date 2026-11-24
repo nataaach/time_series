@@ -1,0 +1,2 @@
+Dataset,Score_ES,Score_Reg,Confidence,Selector_Choice,Empirical_Winner,Match
+Lab2_Data2,1.285,2.118,0.245,Regression,ExponentialSmoothing,False
